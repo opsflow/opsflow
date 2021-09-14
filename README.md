@@ -1,4 +1,4 @@
-# invoice
+# OpsFlow
 
 ## Project setup
 ```
