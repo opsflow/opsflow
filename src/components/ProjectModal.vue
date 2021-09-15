@@ -116,6 +116,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+//import { uid } from "uid";
 
 export default {
   name: "projectModal",
@@ -130,12 +131,52 @@ export default {
       staticAnalysisToken: null,
       projectRepository: null,
       projectLink: null,
+      projectPending: null,
+      projectDraft: null,
     };
   },
   methods: {
     ...mapMutations(["TOGGLE_PROJECT"]),
     closeDraft() {
       this.TOGGLE_PROJECT();
+    },
+
+    saveDraft() {
+      this.projectDraft = true;
+    },
+
+    publishProject() {
+      this.projectPending = true;
+    },
+
+    async uploadProject() {
+      if (this.projectType === null && this.projectHost === null) {
+        alert("Please fill out fields, or select cancel to exit.");
+        return;
+      }
+
+      // const dataBase = db.collection("projects").doc();
+
+      // await dataBase.set({
+      //   projectId: uid(6),
+      //   projectType: null,
+      //   projectHost: null,
+      //   projectHostAccessToken: null,
+      //   projectHostWebHook: null,
+      //   staticAnalysisHost: null,
+      //   staticAnalysisProjectKey: null,
+      //   staticAnalysisToken: null,
+      //   projectRepository: null,
+      //   projectLink: null,
+      //   projectPending: null,
+      //   projectDraft: null,
+      // });
+
+      this.TOGGLE_PROJECT;
+    },
+
+    submitForm() {
+      this.uploadProject();
     },
   },
 };
