@@ -116,7 +116,8 @@
 
 <script>
 import { mapMutations } from "vuex";
-//import { uid } from "uid";
+import { uid } from "uid";
+import db from "../firebase/firebaseInit";
 
 export default {
   name: "projectModal",
@@ -150,29 +151,24 @@ export default {
     },
 
     async uploadProject() {
-      if (this.projectType === null && this.projectHost === null) {
-        alert("Please fill out fields, or select cancel to exit.");
-        return;
-      }
+      const dataBase = db.collection("projects").doc();
 
-      // const dataBase = db.collection("projects").doc();
+      await dataBase.set({
+        projectId: uid(6),
+        projectType: this.projectType,
+        projectHost: this.projectHost,
+        projectHostAccessToken: this.projectHostAccessToken,
+        projectHostWebHook: this.projectHostWebHook,
+        staticAnalysisHost: this.staticAnalysisHost,
+        staticAnalysisProjectKey: this.staticAnalysisProjectKey,
+        staticAnalysisToken: this.staticAnalysisToken,
+        projectRepository: this.projectRepository,
+        projectLink: this.projectLink,
+        projectPending: this.projectPending,
+        projectDraft: this.projectDraft,
+      });
 
-      // await dataBase.set({
-      //   projectId: uid(6),
-      //   projectType: null,
-      //   projectHost: null,
-      //   projectHostAccessToken: null,
-      //   projectHostWebHook: null,
-      //   staticAnalysisHost: null,
-      //   staticAnalysisProjectKey: null,
-      //   staticAnalysisToken: null,
-      //   projectRepository: null,
-      //   projectLink: null,
-      //   projectPending: null,
-      //   projectDraft: null,
-      // });
-
-      this.TOGGLE_PROJECT;
+      this.TOGGLE_PROJECT();
     },
 
     submitForm() {
