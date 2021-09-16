@@ -117,7 +117,8 @@
 <script>
 import { mapMutations } from "vuex";
 import { uid } from "uid";
-import db from "../firebase/firebaseInit";
+import db from "../firebase-init.js";
+import { collection, addDoc } from "firebase/firestore";
 
 export default {
   name: "projectModal",
@@ -151,22 +152,41 @@ export default {
     },
 
     async uploadProject() {
-      const dataBase = db.collection("projects").doc();
+      // const dataBase = db.collection("project").addDoc();
 
-      await dataBase.set({
-        projectId: uid(6),
-        projectType: this.projectType,
-        projectHost: this.projectHost,
-        projectHostAccessToken: this.projectHostAccessToken,
-        projectHostWebHook: this.projectHostWebHook,
-        staticAnalysisHost: this.staticAnalysisHost,
-        staticAnalysisProjectKey: this.staticAnalysisProjectKey,
-        staticAnalysisToken: this.staticAnalysisToken,
-        projectRepository: this.projectRepository,
-        projectLink: this.projectLink,
-        projectPending: this.projectPending,
-        projectDraft: this.projectDraft,
-      });
+      try {
+        const docRef = await addDoc(collection(db, "projects"), {
+          projectId: uid(6),
+          projectType: this.projectType,
+          projectHost: this.projectHost,
+          projectHostAccessToken: this.projectHostAccessToken,
+          projectHostWebHook: this.projectHostWebHook,
+          staticAnalysisHost: this.staticAnalysisHost,
+          staticAnalysisProjectKey: this.staticAnalysisProjectKey,
+          staticAnalysisToken: this.staticAnalysisToken,
+          projectRepository: this.projectRepository,
+          projectLink: this.projectLink,
+          projectPending: this.projectPending,
+          projectDraft: this.projectDraft,
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+      // await dataBase.set({
+      //   projectId: uid(6),
+      //   projectType: this.projectType,
+      //   projectHost: this.projectHost,
+      //   projectHostAccessToken: this.projectHostAccessToken,
+      //   projectHostWebHook: this.projectHostWebHook,
+      //   staticAnalysisHost: this.staticAnalysisHost,
+      //   staticAnalysisProjectKey: this.staticAnalysisProjectKey,
+      //   staticAnalysisToken: this.staticAnalysisToken,
+      //   projectRepository: this.projectRepository,
+      //   projectLink: this.projectLink,
+      //   projectPending: this.projectPending,
+      //   projectDraft: this.projectDraft,
+      // });
 
       this.TOGGLE_PROJECT();
     },
